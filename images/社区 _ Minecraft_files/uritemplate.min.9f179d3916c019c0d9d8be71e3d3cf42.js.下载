@@ -1,0 +1,165 @@
+(function(w){function e(x,A){var y=[];
+var z=x.current();
+while(z){if(!A(z)){break
+}y.push(z);
+z=x.next()
+}return y.join("")
+}function g(x){return(x>="A"&&x<="Z")||(x>="a"&&x<="z")
+}function r(x){return x>="0"&&x<="9"
+}function t(x){return r(x)||(x>="A"&&x<="F")||(x>="a"&&x<="f")
+}function c(x){return g(x)||r(x)||x==="-"||x==="."||x==="_"||x==="~"
+}var h=[":","/","?","#","[","]","@","!","$","&","'","(",")","*","+",",",";","="];
+function d(x){return h.indexOf(x)>=0
+}function j(x){return g(x)||r(x)||x==="_"||x==="%"
+}function p(x){return j(x)||x==="."
+}function n(x){return(x>="\uD800"&&x<="\uDBFF")||(x>="\uDC00"&&x<="\uDFFF")
+}var i=/[!'()*]/g;
+function l(x){return encodeURIComponent(x).replace(i,function(y){return"%"+y.charCodeAt(0).toString(16).toUpperCase()
+})
+}function u(y){var x=[];
+for(var z=0,A=y.length;
+z<A;
+z++){var B=y[z];
+if(c(B)||d(B)){x.push(B)
+}else{if(B==="%"){x.push(B,y[++z],y[++z])
+}else{if(n(B)){x.push(encodeURIComponent(B+y[++z]))
+}else{x.push(l(B))
+}}}}return x.join("")
+}var s=["+","#",".","/",";","?","&"];
+var q=s.concat(["=",",","!","@","|"]);
+function f(x){var y=x[0];
+if(!y){return
+}if(q.indexOf(y)>=0){if(s.indexOf(y)<0){return
+}}else{if(!j(y)){return
+}else{y="NUL"
+}}switch(y){case"NUL":return{op:"",varspeclist:x,first:"",sep:",",named:false,ifemp:"",encode:l};
+case"+":return{op:"+",varspeclist:x.substring(1),first:"",sep:",",named:false,ifemp:"",encode:u};
+case".":case"/":return{op:x[0],varspeclist:x.substring(1),first:x[0],sep:x[0],named:false,ifemp:"",encode:l};
+case";":return{op:";",varspeclist:x.substring(1),first:";",sep:";",named:true,ifemp:"",encode:l};
+case"?":return{op:"?",varspeclist:x.substring(1),first:"?",sep:"&",named:true,ifemp:"=",encode:l};
+case"&":return{op:"&",varspeclist:x.substring(1),first:"&",sep:"&",named:true,ifemp:"=",encode:l};
+case"#":return{op:"#",varspeclist:x.substring(1),first:"#",sep:",",named:false,ifemp:"",encode:u}
+}}function o(z){var x=["{","}"];
+var B=0;
+var y=function(C){if(B>0){if(!t(C)){return false
+}if(++B===3){B=0
+}return true
+}if(C==="%"){B++;
+return true
+}return x.indexOf(C)<0&&C>="!"
+};
+while(z.hasNext()){z.next();
+var A=e(z,y);
+z.append(u(A));
+if(z.current()==="{"){v(z)
+}else{if(z.hasNext()||B>0){z.halt("Malform expression")
+}}}}function v(z){z.next();
+var I=e(z,function(J){return J!=="}"
+});
+if(z.current()!=="}"){z.append("{",I);
+z.halt("Malform expression")
+}var A=f(I);
+if(!A){z.fail("{",I,"}");
+return
+}var C=A.varspeclist;
+var E=-1;
+var F;
+var G={current:function(){return F
+},hasNext:function(){return E<C.length
+},next:function(){F=C[++E];
+return F
+}};
+var y=true;
+while(G.hasNext()){G.next();
+var x=e(G,p);
+var B=null;
+var D=null;
+if(!G.hasNext()){if(x.length===0){return
+}}else{if(G.current()==="*"){B=G.current();
+G.next()
+}else{if(G.current()===":"){B=G.current();
+G.next();
+D=parseInt(e(G,r),10);
+if(isNaN(D)){z.fail("{",I,"}");
+return
+}}}if(G.hasNext()&&G.current()!==","){z.fail("{",I,"}");
+return
+}}var H=z.value(x);
+if(H===undefined||H===null||(Array.isArray(H)&&H.length===0)||(typeof H==="object"&&Object.keys(H).length===0)){continue
+}else{if(typeof H==="number"){H=H.toString()
+}}if(y){z.append(A.first);
+y=false
+}else{z.append(A.sep)
+}if(typeof H==="string"){if(A.named){z.append(u(x));
+if(H.length===0){z.append(A.ifemp);
+continue
+}z.append("=")
+}if(B===":"&&D<H.length){z.append(A.encode(H.substring(0,D)))
+}else{z.append(A.encode(H))
+}}else{if(B!=="*"){if(A.named){z.append(u(x));
+if(H.length===0){z.append(A.ifemp);
+continue
+}z.append("=")
+}if(Array.isArray(H)){z.append(H.map(A.encode).join(","))
+}else{if(typeof H==="object"){if(D!==null){z.fail("{",I,"}");
+return
+}k(H,A.encode,z,",",",")
+}}}else{if(A.named){if(Array.isArray(H)){m(x,H,z,A)
+}else{if(typeof H==="object"){a(H,z,A)
+}}}else{if(Array.isArray(H)){z.append(H.map(A.encode).join(A.sep))
+}else{if(typeof H==="object"){k(H,A.encode,z,"=",A.sep)
+}}}}}}}function m(z,x,A,y){var B=true;
+x.forEach(function(C){if(C===undefined||C===null){return
+}if(B){B=false
+}else{A.append(y.sep)
+}A.append(u(z));
+if(C.length===0){A.append(y.ifemp)
+}else{A.append("=",y.encode(C))
+}})
+}function a(A,y,x){var z=true;
+Object.keys(A).forEach(function(C){var B=A[C];
+if(B===undefined||B===null){return
+}if(z){z=false
+}else{y.append(x.sep)
+}y.append(u(C));
+if(B.length===0){y.append(x.ifemp)
+}else{y.append("=",x.encode(B))
+}})
+}function k(C,z,A,x,y){var B=true;
+Object.keys(C).forEach(function(E){var D=C[E];
+if(D===undefined||D===null){return
+}if(B){B=false
+}else{A.append(y)
+}A.append(z(E),x,z(D))
+})
+}function b(x){this.name="URITemplateError";
+this.message=x
+}b.prototype=new Error();
+b.prototype.constructor=b;
+w.URITemplateError=b;
+w.expand=function(A,D){D=D||{};
+var z=false;
+var x="";
+var y=-1;
+var C;
+var B={fail:function(){z=true;
+this.append.apply(this,arguments)
+},halt:function(E){z=true;
+throw new b(E+": "+x)
+},append:function(){for(var E=0,F=arguments.length;
+E<F;
+E++){x+=arguments[E]
+}},current:function(){return C
+},hasNext:function(){return y<A.length
+},next:function(){C=A[++y];
+return C
+},value:function(E){return D[E]
+}};
+o(B);
+if(z){throw new b("Invalid template: "+x)
+}return x
+}
+})(typeof module==="object"&&module.exports?module.exports:(function(){var a=window.Granite=window.Granite||{};
+a.URITemplate={};
+return a.URITemplate
+})());

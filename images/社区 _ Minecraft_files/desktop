@@ -1,0 +1,8 @@
+'use strict';
+CONFIG.url.site = "https://mixer.com";
+CONFIG.url.thumbs = "https://thumbs.mixer.com";
+CONFIG.url.oauthCheckBase = "https://mixer.com/api";
+CONFIG.constellation.url = "wss://constellation.mixer.com";
+CONFIG.log.dsn = "https://88ae600ca01741f396e0078edcbea562@app.getsentry.com/33033";
+CONFIG.stripe.clientKey = "pk_live_E6NyyoK7aaciWrEy4oWwRNJe";
+CONFIG.msa.clientId = "00000000401B4D20";

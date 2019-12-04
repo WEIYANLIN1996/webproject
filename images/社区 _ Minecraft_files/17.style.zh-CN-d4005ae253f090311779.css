@@ -1,0 +1,338 @@
+/* stylelint-disable */
+
+/* stylelint-enable */
+.searchInput_3HQrc {
+  position: relative;
+  margin: 10px 24px 4px;
+  z-index: 53; }
+
+.dialog_2LaOx {
+  display: flex;
+  flex-flow: column wrap;
+  position: fixed;
+  width: 640px;
+  height: 560px;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #212c3d;
+  box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.3);
+  top: calc((100vh - 560px) / 2);
+  left: calc((100vw - 640px) / 2);
+  z-index: 54;
+  align-items: center;
+  justify-content: center; }
+  @media (-ms-high-contrast: white-on-black) {
+    .dialog_2LaOx {
+      box-shadow: 0 0 10px white; } }
+  @media (-ms-high-contrast: black-on-white) {
+    .dialog_2LaOx {
+      box-shadow: 0 0 10px black; } }
+
+.subGiftModal_3Uk34 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 560px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Industrywf", sans-serif;
+  z-index: 51; }
+  .subGiftModal_3Uk34 .close-button {
+    position: absolute;
+    right: 24px;
+    top: 24px; }
+  .subGiftModal_3Uk34 .header_sZbkx {
+    width: 100%;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold; }
+  .subGiftModal_3Uk34 .body_MKRwQ {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 255px; }
+  .subGiftModal_3Uk34 .footer_2c86i {
+    font-family: 'Segoe UI';
+    font-weight: normal;
+    font-size: 14px;
+    margin: 30px auto 0px;
+    text-align: center;
+    width: 80%;
+    opacity: 1; }
+
+.subtext_1_HeT {
+  height: 37px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Segoe UI';
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  margin: 0px 24px 24px; }
+
+.errorText_2j39o {
+  line-height: 17px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  padding-bottom: 24px; }
+
+.gift_2HpdX {
+  height: 216px;
+  width: 216px;
+  margin: 20px 72px 0px; }
+
+.giftNowBtn_14_ec {
+  position: absolute;
+  bottom: 30px;
+  left: 130px;
+  z-index: 52; }
+
+.bgBlur_RfZ2I {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background: rgba(1, 1, 1, 0.7);
+  z-index: 50; }
+
+.container_2CE-0 {
+  display: flex;
+  flex-direction: column;
+  padding: 0 120px; }
+  @media (max-width: 960px) {
+    .container_2CE-0 {
+      padding: 0 15px; } }
+  @media (max-width: 600px) {
+    .container_2CE-0 {
+      padding: 0 20px; } }
+
+.header_11G19 {
+  color: #f7f7f7;
+  font-family: "Industrywf", sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 42px; }
+
+.subHeader_1Axp_ {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: "Industrywf", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px; }
+
+.listContainer_3sJ_E {
+  display: flex;
+  flex-direction: column; }
+  .listContainer_3sJ_E .listName_3NKMc {
+    margin-top: 40px;
+    color: #ffffff;
+    font-family: "Industrywf", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px; }
+
+.emptyPageContainer_J_oGq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 80px; }
+  @media (max-width: 600px) {
+    .emptyPageContainer_J_oGq {
+      flex-direction: column; } }
+
+.emptyPageImage_1VKuF {
+  height: 195px;
+  width: 300px; }
+
+.emptyPageContent_1arwW {
+  display: flex;
+  flex-direction: column; }
+  .emptyPageContent_1arwW .errorText_3ooy7 {
+    color: #f7f7f7;
+    font-family: "Industrywf", sans-serif;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 42px; }
+  .emptyPageContent_1arwW .errorDetail_1LL-o {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: "Industrywf", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px; }
+  .emptyPageContent_1arwW .button_2w2K- {
+    height: 40px;
+    width: 189px;
+    margin-top: 40px;
+    border-radius: 2px;
+    background-color: #0078d7;
+    text-align: center;
+    color: #ffffff;
+    font-family: "Industrywf", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 40px; }
+  @media (max-width: 600px) {
+    .emptyPageContent_1arwW {
+      align-items: center; }
+      .emptyPageContent_1arwW .errorText_3ooy7 {
+        text-align: center; }
+      .emptyPageContent_1arwW .errorDetail_1LL-o {
+        text-align: center; } }
+
+.tokenContainer_RRT4p {
+  display: flex;
+  align-items: center;
+  padding: 20px 0px;
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 21px; }
+  @media (max-width: 600px) {
+    .tokenContainer_RRT4p {
+      flex-direction: column; } }
+
+.underline_2qOhr {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1); }
+
+.productContainer_3MrEa {
+  flex-basis: 25%;
+  display: flex;
+  align-items: center; }
+  .productContainer_3MrEa img {
+    margin-left: 10px;
+    margin-right: 15px;
+    width: 70px;
+    height: 70px; }
+  .productContainer_3MrEa span {
+    padding-left: 5px; }
+  @media (max-width: 600px) {
+    .productContainer_3MrEa {
+      align-self: start; } }
+
+.platformContainer_2-zmW {
+  flex-basis: 25%;
+  padding-right: 30px; }
+  @media (max-width: 600px) {
+    .platformContainer_2-zmW {
+      display: flex;
+      align-self: start;
+      width: 100%;
+      margin-top: 10px;
+      padding-right: 0px; }
+      .platformContainer_2-zmW .selectList_2VC1W {
+        flex-basis: 100%; } }
+
+.dateContainer_1ffUZ {
+  flex-basis: 20%; }
+  @media (max-width: 600px) {
+    .dateContainer_1ffUZ {
+      display: flex;
+      align-self: start;
+      width: 100%;
+      margin-top: 10px; } }
+
+.codeContainer_WfDRX {
+  flex: 1;
+  display: flex;
+  align-items: center; }
+  .codeContainer_WfDRX .code_DcRGc {
+    flex-basis: 80%;
+    min-height: 38px;
+    margin-right: 5px;
+    padding-left: 10px;
+    line-height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.3); }
+  @media (max-width: 600px) {
+    .codeContainer_WfDRX {
+      align-self: start;
+      margin-top: 10px;
+      width: 100%; } }
+
+.copyButton_CUS1a {
+  height: 32px;
+  flex-basis: 20%;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-family: "Industrywf", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.44px;
+  line-height: 17px;
+  text-transform: uppercase; }
+  @media (max-width: 960px) {
+    .copyButton_CUS1a {
+      background: transparent; } }
+  @media (max-width: 600px) {
+    .copyButton_CUS1a {
+      background-color: rgba(255, 255, 255, 0.1); } }
+
+.viewCodeButton_1_k1o, .claimCodeButton_1Hd82 {
+  height: 38px;
+  flex-basis: 80%;
+  border-radius: 2px;
+  font-family: "Industrywf", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  text-transform: uppercase; }
+  @media (max-width: 600px) {
+    .viewCodeButton_1_k1o, .claimCodeButton_1Hd82 {
+      flex-basis: 100%; } }
+
+.viewCodeButton_1_k1o {
+  background-color: #3c506b; }
+
+.claimCodeButton_1Hd82 {
+  background-color: #0078d7; }
+
+.labelContainer_33hnQ {
+  display: flex;
+  padding: 10px 10px;
+  color: #aaafb6;
+  font-family: "Industrywf", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.44px;
+  line-height: 17px;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1); }
+  .labelContainer_33hnQ .productLabel_3rFOb {
+    flex-basis: 25%; }
+  .labelContainer_33hnQ .platfromLabel_3JdVB {
+    flex-basis: 25%; }
+  .labelContainer_33hnQ .dateLabel_1tM0B {
+    flex-basis: 20%; }
+  .labelContainer_33hnQ .keyLabel_2x3kC {
+    flex: 1; }
+  @media (max-width: 600px) {
+    .labelContainer_33hnQ {
+      display: none; } }
+
+.label_2wr-4 {
+  display: none;
+  flex-basis: 50%;
+  text-align: left;
+  color: #aaafb6;
+  font-family: "Industrywf", sans-serif;
+  font-size: 14px;
+  text-transform: uppercase; }
+  @media (max-width: 600px) {
+    .label_2wr-4 {
+      display: block; } }
+
+.content_1yA6x {
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16px; }
+  @media (max-width: 600px) {
+    .content_1yA6x {
+      flex-basis: 50%;
+      text-align: right; } }
+
+
+/*# sourceMappingURL=17.style.zh-CN-d4005ae253f090311779.css.map*/

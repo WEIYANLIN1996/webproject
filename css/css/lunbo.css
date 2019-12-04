@@ -1,0 +1,252 @@
+*{margin: 0;padding: 0}
+.wrap{
+   
+}
+.containe{
+   width: 100%;
+   overflow: hidden;
+   /* height: 400px; */
+   background: red;
+   position: relative;
+}
+.box{
+    width: 125%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    left: 0;
+   }
+.box li{
+    width: 20%;
+    float: left;
+    list-style: none;
+    -webkit-transition: width 0.5s, height 0.5s, margin 0.5s;
+    position: relative;
+}
+.box video {
+    width: 100%;
+    height: 100%;
+}
+.box li div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.box li div img {
+    width: 100%;
+    height: 100%;
+}
+/* .box li:nth-child(2){
+    height: 360px;
+    margin: 0 1%;
+} */
+.goLeft, .goRight {
+    position: absolute;
+    width: 28px;
+    height: 52px;
+    top: 50%;
+    transform: translate(0,-50%);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    line-height: 52px;
+}
+.goLeft {
+    left: 20%;
+}
+.goRight {
+    right: 20%;
+}
+.box li>p {
+    margin: 0;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+.box li>p>span {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background: url(play.png);
+}
+.ddd{
+    width: 100%;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.dd-2{
+    width: 20%;
+    background: yellow;
+}
+.aa{
+    width: 100%;
+}
+
+.swiper-wrap{
+	margin-top: 20px;
+    width: 100%;
+    height: 700px;
+    border: 1px solid rgba(0,0,0,0.0);
+    position: relative;
+    z-index: 6;
+}
+.swiper{
+	width: 5000px;
+	height: 300px;
+	margin-top:200px;
+}
+.swiper .swiper-img{
+	float: left;
+	width: 200px;
+	height: 200px;
+	position: absolute;
+
+}
+.swiper .lunbo-item a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.swiper .lunbo-left a div{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: rgba(0,0,0,0.6);
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.swiper .lunbo-right a div{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: rgba(0,0,0,0.6);
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.swiper .lunbo-item a img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.lunbo-left{
+	float: left;
+	width: 300px;
+	height: 300px;
+	position: absolute;
+	left: 0;
+	z-index: 66;
+	display: block;
+	transition: width 0.5s,height 0.5s;
+}
+
+.lunbo-center{
+    float: left;
+	width:800px;
+	height:600px;
+	right: 50%;
+	margin-right: -400px;	
+	z-index:666;
+	margin-top:-300px;
+	top:50%; 
+	position: absolute;
+	transition: width 0.5s,height 0.5s;
+	border: 3px solid green;
+
+}
+.lunbo-center a{
+    display: block;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.swiper .lunbo-center a img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.lunbo-right{
+	float: left;
+	width: 300px;
+	height: 300px;
+	position: absolute;
+	margin-left: -300px;
+	left: 100%;
+	z-index: 67;
+	transition: width 0.5s,height 0.5s;
+}
+.slide-left{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	margin-top: -50px;
+	top: 50%;
+	left: 40px;
+	z-index: 88;
+}
+.slide-left span{
+    display: block;
+	width: 50px;
+	height: 50px;
+    transform: rotate(45deg);
+    border: 2px solid white;
+    margin: 25px auto;
+    border-top: none;
+    border-right: none;
+}
+.slide-right{
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	margin-top: -50px;
+	top: 50%;
+	right: 40px;
+	z-index: 88;
+}
+.slide-right span{
+    display: block;
+	width: 50px;
+	height: 50px;
+    transform: rotate(45deg);
+    border: 2px solid white;
+    margin: 25px auto;
+    border-bottom: none;
+    border-left: none;
+}
+.circle{
+	position: absolute;
+    width: 200px;
+    height: 40px;
+    margin-left: -100px;
+    left: 50%;
+    bottom: 5px;
+}
+.circle span{
+	display: block;
+	float: left;
+    width: 12px;
+    height: 12px;
+    margin-left: 15px;
+    background-color: #CCC;
+    margin-top: 20px;
+}

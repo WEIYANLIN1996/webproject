@@ -1,0 +1,95 @@
+@media screen and (max-width: 1200px) {
+   .sub-container{
+      width: 95%;
+   }
+   .banner .banner-box{
+      width: 100%;
+      height: 50%;
+   }
+   .banner .banner-box .wrap-box-min {
+      width: 80%;
+      height: 40px;
+      line-height: 0;     
+   }  
+}
+@media screen and (max-width: 850px) {
+   .banner .banner-box{
+      width: 100%;
+      height: 40%;
+   }
+   .banner .banner-box a  span:nth-child(1){
+      height: 25px;
+      line-height: 10px;
+
+   }
+   .banner .banner-box a  span:nth-child(1) b{
+      font-size: 18px;
+   }
+   .banner .banner-box .wrap-box a{
+       display: block;
+       width: 80%;
+       height: 100%;
+       margin: 0px auto;
+       text-align: center;
+       text-decoration: none;
+       margin-top: 0;
+   }
+   .sub-container{
+      width: 90%;
+      height: auto;
+      
+
+   }
+   .subnav{
+      width: 100%;
+       height: auto;
+   }
+
+	.tip-link{
+		width: 40%;
+		margin-left:-20%;
+	}
+   .tip-link p{
+   	font-size: 12px;
+
+   }
+   .tip-link .btn{
+	   width: 60%;
+	   font-size: 12px;
+	   font-weight: 200;
+	   margin: 5px auto;
+	   height: 30px;
+	   text-align: center;
+   }
+   
+}
+@media screen and (max-width: 600px) {
+	.tip-link{
+		width: 80%;
+		margin-left:-40%;
+	}
+   .tip-link p{
+   	   font-size: 13px;
+
+   }
+   .tip-link .btn{
+   	   font-size: 12px;
+   	   margin: 5px auto;
+   	   line-height: 15px;
+   	   height: 30px;
+   }
+   .sub-container{
+      width: 90%;
+      height: auto;
+   }
+   .subnav ul{
+      width: 100%;
+      height: auto;
+   }
+   .subnav ul li{
+      width: 20%;
+      height: auto;
+      margin-right: 0;
+   }
+   
+}

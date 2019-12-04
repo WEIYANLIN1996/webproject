@@ -1,0 +1,103 @@
+/* stylelint-disable */
+
+/* stylelint-enable */
+.searchInput_3HQrc {
+  position: relative;
+  margin: 10px 24px 4px;
+  z-index: 53; }
+
+.dialog_2LaOx {
+  display: flex;
+  flex-flow: column wrap;
+  position: fixed;
+  width: 640px;
+  height: 560px;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #212c3d;
+  box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.3);
+  top: calc((100vh - 560px) / 2);
+  left: calc((100vw - 640px) / 2);
+  z-index: 54;
+  align-items: center;
+  justify-content: center; }
+  @media (-ms-high-contrast: white-on-black) {
+    .dialog_2LaOx {
+      box-shadow: 0 0 10px white; } }
+  @media (-ms-high-contrast: black-on-white) {
+    .dialog_2LaOx {
+      box-shadow: 0 0 10px black; } }
+
+.subGiftModal_3Uk34 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 560px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Industrywf", sans-serif;
+  z-index: 51; }
+  .subGiftModal_3Uk34 .close-button {
+    position: absolute;
+    right: 24px;
+    top: 24px; }
+  .subGiftModal_3Uk34 .header_sZbkx {
+    width: 100%;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold; }
+  .subGiftModal_3Uk34 .body_MKRwQ {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 255px; }
+  .subGiftModal_3Uk34 .footer_2c86i {
+    font-family: 'Segoe UI';
+    font-weight: normal;
+    font-size: 14px;
+    margin: 30px auto 0px;
+    text-align: center;
+    width: 80%;
+    opacity: 1; }
+
+.subtext_1_HeT {
+  height: 37px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Segoe UI';
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  margin: 0px 24px 24px; }
+
+.errorText_2j39o {
+  line-height: 17px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  padding-bottom: 24px; }
+
+.gift_2HpdX {
+  height: 216px;
+  width: 216px;
+  margin: 20px 72px 0px; }
+
+.giftNowBtn_14_ec {
+  position: absolute;
+  bottom: 30px;
+  left: 130px;
+  z-index: 52; }
+
+.bgBlur_RfZ2I {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background: rgba(1, 1, 1, 0.7);
+  z-index: 50; }
+
+
+/*# sourceMappingURL=2.style.zh-CN-c0622f7ebcb5ca31dc01.css.map*/

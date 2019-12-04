@@ -1,0 +1,1544 @@
+/*
+ * jQuery v1.9.1 included
+ */
+$(document).ready(function () {
+
+    // social share popups
+    $(".share a").click(function (e) {
+        e.preventDefault();
+        window.open(this.href, "", "height = 500, width = 500");
+    });
+
+    // show form controls when the textarea receives focus or backbutton is used and value exists
+    var $commentContainerTextarea = $(".comment-container textarea"),
+            $commentContainerFormControls = $(".comment-form-controls, .comment-ccs");
+
+    $commentContainerTextarea.one("focus", function () {
+        $commentContainerFormControls.show();
+    });
+
+    if ($commentContainerTextarea.val() !== "") {
+        $commentContainerFormControls.show();
+    }
+
+    // Expand Request comment form when Add to conversation is clicked
+    var $showRequestCommentContainerTrigger = $(".request-container .comment-container .comment-show-container"),
+            $requestCommentFields = $(".request-container .comment-container .comment-fields"),
+            $requestCommentSubmit = $(".request-container .comment-container .request-submit-comment");
+
+    $showRequestCommentContainerTrigger.on("click", function () {
+        $showRequestCommentContainerTrigger.hide();
+        $requestCommentFields.show();
+        $requestCommentSubmit.show();
+        $commentContainerTextarea.focus();
+    });
+
+    // Mark as solved button
+    var $requestMarkAsSolvedButton = $(".request-container .mark-as-solved:not([data-disabled])"),
+            $requestMarkAsSolvedCheckbox = $(".request-container .comment-container input[type=checkbox]"),
+            $requestCommentSubmitButton = $(".request-container .comment-container input[type=submit]");
+
+    $requestMarkAsSolvedButton.on("click", function () {
+        $requestMarkAsSolvedCheckbox.attr("checked", true);
+        $requestCommentSubmitButton.prop("disabled", true);
+        $(this).attr("data-disabled", true).closest("form").submit();
+    });
+
+    // Change Mark as solved text according to whether comment is filled
+    var $requestCommentTextarea = $(".request-container .comment-container textarea");
+
+    $requestCommentTextarea.on("keyup", function () {
+        if ($requestCommentTextarea.val() !== "") {
+            $requestMarkAsSolvedButton.text($requestMarkAsSolvedButton.data("solve-and-submit-translation"));
+            $requestCommentSubmitButton.prop("disabled", false);
+        } else {
+            $requestMarkAsSolvedButton.text($requestMarkAsSolvedButton.data("solve-translation"));
+            $requestCommentSubmitButton.prop("disabled", true);
+        }
+    });
+
+    // Disable submit button if textarea is empty
+    if ($requestCommentTextarea.val() === "") {
+        $requestCommentSubmitButton.prop("disabled", true);
+    }
+
+    // Submit requests filter form in the request list page
+    $("#request-status-select, #request-organization-select")
+            .on("change", function () {
+                search();
+            });
+
+    // Submit requests filter form in the request list page
+    $("#quick-search").on("keypress", function (e) {
+        if (e.which === 13) {
+            search();
+        }
+    });
+
+    function search() {
+        window.location.search = $.param({
+            query: $("#quick-search").val(),
+            status: $("#request-status-select").val(),
+            organization_id: $("#request-organization-select").val()
+        });
+    }
+
+    $(".header .icon-menu").on("click", function (e) {
+        e.stopPropagation();
+        var menu = document.getElementById("user-nav");
+        var isExpanded = menu.getAttribute("aria-expanded") === "true";
+        menu.setAttribute("aria-expanded", !isExpanded);
+    });
+
+    if ($("#user-nav").children().length === 0) {
+        $(".header .icon-menu").hide();
+    }
+
+    // Submit organization form in the request page
+    $("#request-organization select").on("change", function () {
+        this.form.submit();
+    });
+
+    // Toggles expanded aria to collapsible elements
+    $(".collapsible-nav, .collapsible-sidebar").on("click", function (e) {
+        e.stopPropagation();
+        var isExpanded = this.getAttribute("aria-expanded") === "true";
+        this.setAttribute("aria-expanded", !isExpanded);
+    });
+});
+
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    // change text of Post Actions dropdown menu statuses
+    $('.post-actions .dropdown-menu :nth-child(3)').text('staff comment');
+    $('.post-actions .dropdown-menu :nth-child(4)').text('under review');
+    $('.post-actions .dropdown-menu :nth-child(5)').text('updated');
+    $('.post-actions .dropdown-menu :nth-child(6)').text('needs info');
+
+    //hide empty status in dropdown
+    $('#statusDrop a:last-child').hide();
+    //'My feedback' CTA Functionality
+    var user_link;
+    if (document.getElementById("user")) {
+        $("#user-menu a").each(function () {
+            if ($(this).text() == "My profile") {
+                user_link = $(this).attr('href');
+            }
+        });
+        $('#myFeedCta').attr('href', 'https://minecrafthelp.zendesk.com' + user_link);
+    } else {
+        $('#myFeedCta').attr('href', '#');
+    }
+
+    //'My Feedback' on-click
+    $("#myFeedCta").click(function (e) {
+        var target = $(this).attr('href');
+        if (target == '#') {
+            var logHref = $('.login').attr('href');
+            $("#myFeedCta").attr('href', logHref);
+        }
+    });
+
+    $('body').on('click', '.searchSpan', function (event) {
+        $(".menu-mobile").removeClass('bg-on-mobile');
+        $(".menu-mobile .menuLay img").attr("src", $(".menu-mobile .menuLay img").attr('data-mouseDef'));
+        if ($('.show-on-mobile').is(':visible')) {
+            $('.clearfix').removeClass('show-on-mobile');
+        }
+        if (!$('.tabSer').is(':visible')) {
+            $('.searchSpan .searchLay').addClass('closeSer');
+            $('.searchSpan .searchLay').css('background', '#313131');
+            $('.tabSer').show();
+            $('main').css('padding-top', '94px');
+        } else {
+            $('.searchSpan .searchLay').removeClass('closeSer');
+            $('.searchSpan .searchLay').css('background', 'transparent');
+            $('.tabSer').hide();
+            $('main').css('padding-top', '0px');
+        }
+    });
+    //Search form
+    $('form.search-full').attr('id', 'menuSer')
+    /*$("#menuSer").submit(function(event) {
+     if($('form.search-full input[type="search"]').val().length == 0) {
+     event.preventDefault();
+     return false;
+     } else {
+     return true;
+     }
+     });*/
+    $('body').on('click', '#searchIcon', function (event) {
+        var y = encodeURIComponent($(this).siblings('input[type="search"]').val());
+        var x = "/hc/en-us/search?utf8=%E2%9C%93&query=" + y;
+        window.location.href = x;
+    });
+    //shoe selected custom status in active state
+    var abc = $('#filtersList .dropdown-menu [role="menuitem"][aria-selected="true"]').text();
+    $('#filtersList.dropdown .dropdown-toggle').text('Show ' + abc);
+    //search Icon
+    $(".menu .search-full").append('<span id="searchIcon"></span>');
+    //NEw post page placeholder
+    $('.new_community_post .nesty-input').text('Please select a topic...');
+    $("#community_post_topic_id option:first").text('Please select a topic...');
+    //hide empty <p> in post page
+    $('.post-body p').filter(function () {
+        return $.trim($(this).text()) === ''
+    }).remove();
+    // Top nav signin text change
+    $('.login').text('FEEDBACK LOGIN');
+    // Follow text change
+    $('.post-subscribe').text('Follow Post');
+    // New post text change
+    $('.newPostText').text('Post new feedback');
+
+    //To get post count from topic list page and render in menu
+    var lang = $('html').attr('lang').toLowerCase();
+    ;
+    $.ajax({
+        url: 'https://' + hostname + '/hc/' + lang + '/community/topics', //Pass URL here 
+        type: "GET", //Also use GET method
+        success: function (data) {
+            var pCount = $(data).find('#topicsSidebar').html();
+            $('#topicData').after(pCount);
+        }
+    });
+    //To get article count from category page and render in sidebar card
+    $.ajax({
+        url: 'https://' + hostname + '/hc/' + lang + '/categories/360000444511-General', //Pass URL here 
+        type: "GET", //Also use GET method
+        success: function (data) {
+            var aCount = $(data).find('#sectionSidebar').html();
+            $('#sectionData').after(aCount);
+        }
+    });
+});
+
+// GET post under review
+$(document).ready(function () {
+    var hostname = window.location.hostname;
+    var items = new Array();
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/community/topics.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.topics, function (index) {
+                    if (data.topics[index].user_segment_id == null) {
+                        var topicIdNo = data.topics[index].id;
+                        items.push(topicIdNo);
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    var item = items[Math.floor(Math.random() * items.length)];
+
+    var hc_urla = 'https://' + hostname;
+    var _allarticlesa = [],
+            _artHtmla = '',
+            _urla;
+    var _articlesa = function (article) {
+        $.ajax({
+            url: _urla,
+            type: 'GET',
+            dataType: 'json',
+            success: article
+        });
+    };
+    _urla = hc_urla + '/api/v2/community/topics/' + item + '/posts.json?sort_by=votes&page=1&per_page=3';
+    _articlesa(function (data) {
+        _allarticlesa = data.posts;
+        _arthtmla = '<ul>';
+        $(data.posts).each(function (idxa, itma) {
+            var l;
+            $.ajax({
+                url: '/api/v2/community/topics/' + item + '/posts.json?sort_by=votes&page=1&per_page=3',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    l = data.count;
+                }
+            });
+            _arthtmla = _arthtmla + '<li><a href="' + itma.html_url + '" class="feedTitle">' + itma.title + '</a></li>';
+        });
+        _arthtmla += '</ul>';
+        $('#underReviewPosts').html(_arthtmla);
+    });
+});
+
+//// GET Current
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var items = new Array();
+    var _arthtmla = '<ul>';
+    var count = 0;
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/help_center/articles.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.articles, function (index) {
+                    if (data.articles[index].section_id != null) {
+                        count++;
+                        if (count <= 5) {
+                            var articleIdNo = data.articles[index].url;
+                            _arthtmla = _arthtmla + '<li><a href="' + data.articles[index].html_url + '" class="feedTitle">' + data.articles[index].title + '</a></li>\n';
+                        }
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    _arthtmla += '</ul>';
+    _arthtmla += '<a href="https://' + hostname + '/hc/en-us/sections/360004954631-Payment-Troubleshooting" class="btn btn-pill"><span class="desk-view-text">View All </span>' + count + '</a>';
+    $('#current_Section').html(_arthtmla);
+});
+
+//// GET articles payment troubleshooting
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var items = new Array();
+    var _arthtmla = '<ul>';
+    var count = 0;
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/help_center/articles.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.articles, function (index) {
+                    if (data.articles[index].section_id == '360004954631') {
+                        count++;
+                        if (count <= 5) {
+                            var articleIdNo = data.articles[index].url;
+                            _arthtmla = _arthtmla + '<li><a href="' + data.articles[index].html_url + '" class="feedTitle">' + data.articles[index].title + '</a></li>\n';
+                        }
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    _arthtmla += '</ul>';
+    _arthtmla += '<a href="https://' + hostname + '/hc/en-us/sections/360004954631-Payment-Troubleshooting" class="btn btn-pill"><span class="desk-view-text">View All </span>' + count + '</a>';
+    $('#paymentTroubleShoot').html(_arthtmla);
+});
+
+
+//// GET minecraft troubleshooting
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var items = new Array();
+    var _arthtmla = '<ul>';
+    var count = 0;
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/help_center/articles.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.articles, function (index) {
+                    if (data.articles[index].section_id == '360004935372') {
+                        count++;
+                        if (count <= 5) {
+                            var articleIdNo = data.articles[index].url;
+                            _arthtmla = _arthtmla + '<li><a href="' + data.articles[index].html_url + '" class="feedTitle">' + data.articles[index].title + '</a></li>\n';
+                        }
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    _arthtmla += '</ul>';
+    _arthtmla += '<a href="https://' + hostname + '/hc/en-us/sections/360004935372-Minecraft-Troubleshooting" class="btn btn-pill"><span class="desk-view-text">View All </span>' + count + '</a>';
+    $('#minecraft_troubleshooting').html(_arthtmla);
+});
+
+// GET minecraft realms section
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var items = new Array();
+    var _arthtmla = '<ul>';
+    var count = 0;
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/help_center/articles.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.articles, function (index) {
+                    if (data.articles[index].section_id == '360004954931') {
+                        count++;
+                        if (count <= 5) {
+                            var articleIdNo = data.articles[index].url;
+                            _arthtmla = _arthtmla + '<li><a href="' + data.articles[index].html_url + '" class="feedTitle">' + data.articles[index].title + '</a></li>\n';
+                        }
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    _arthtmla += '</ul>';
+    _arthtmla += '<a href="https://' + hostname + '/hc/en-us/sections/360004954931-Minecraft-Realms" class="btn btn-pill"><span class="desk-view-text">View All </span>' + count + '</a>';
+    $('#minecraft_realms_section').html(_arthtmla);
+});
+
+// GET random posts without tag
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var items = new Array();
+    function myfunctionalt() {
+        $.ajax({
+            url: 'https://' + hostname + '/api/v2/community/topics.json',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $.each(data.topics, function (index) {
+                    if (data.topics[index].user_segment_id == null) {
+                        var topicIdNo = data.topics[index].id;
+                        items.push(topicIdNo);
+                    }
+                });
+            }
+        });
+    }
+    myfunctionalt();
+    var item = items[Math.floor(Math.random() * items.length)];
+    var itemsalt = Array(1, 2, 3);
+    var itemalt = itemsalt[Math.floor(Math.random() * itemsalt.length)];
+    var hc_url = 'https://' + hostname;
+    var _allarticles = [],
+            _arthtmla = '',
+            _urla;
+    var _articles = function (article) {
+        $.ajax({
+            url: _urla,
+            type: 'GET',
+            dataType: 'json',
+            success: article
+        });
+    };
+    _urla = hc_url + '/api/v2/community/topics/' + item + '/posts.json?sort_by=votes&page=' + itemalt + '&per_page=3';
+    _articles(function (data) {
+        _allarticles = data.posts;
+        _arthtml = '<ul>';
+        $(data.posts).each(function (idx, itma) {
+            var l;
+            $.ajax({
+                url: '/api/v2/community/topics/' + item + '/posts.json?sort_by=votes&page=' + itemalt + '&per_page=3',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    l = data.count;
+                }
+            });
+            _arthtmla = _arthtmla + '<li><a href="' + itma.html_url + '" class="feedTitle">' + itma.title + '</a></li>';
+        });
+        _arthtmla += '</ul>';
+        $('#randomPosts').html(_arthtml);
+    });
+});
+
+//Article Voting Box
+/*$(document).ready(function() {
+ 
+ //Check if the article has been voted already
+ if($(".article-vote-up").attr("aria-selected") !== typeof underfined && $(".article-vote-up").attr("aria-selected") === "true")
+ {
+ var rateDiv = document.getElementById("rate_article");
+ rateDiv.innerHTML = '';
+ rateDiv.innerText = "Already voted!";
+ }
+ if($(".article-vote-down").attr("aria-selected") !== typeof underfined && $(".article-vote-down").attr("aria-selected") === "true")
+ {
+ var rateDiv = document.getElementById("rate_article");
+ rateDiv.innerHTML = '';
+ rateDiv.innerText = "Already voted!";
+ }
+ 
+ //On click function
+ $(".article-vote-up").click(function() {
+ if (document.getElementById("user")) {
+ if ($(this).hasClass("vote-voted")) {
+ $(this).text('Vote');
+ } else {
+ $(this).text('Voted!');
+ $(this).css('background', '#2a81d7;');
+ }
+ } else {
+ var logHref = $('.login').attr('href');
+ $('.vote-button').attr('href', logHref);
+ var rateDiv = document.getElementById("rate_article");
+ rateDiv.innerHTML = '';
+ rateDiv.innerText = "Thank you!";
+ }
+ 
+ });
+ $(".article-vote-down").click(function() {
+ if (document.getElementById("user")) {
+ if ($(this).hasClass("vote-voted")) {
+ $(this).text('Vote');
+ } else {
+ $(this).text('Voted!');
+ $(this).css('background', '#2a81d7;');
+ }
+ } else {
+ var logHref = $('.login').attr('href');
+ $('.vote-button').attr('href', logHref);
+ var rateDiv = document.getElementById("rate_article");
+ rateDiv.innerHTML = '';
+ rateDiv.innerText = "Thank you!";
+ }
+ });
+ });
+ */
+
+//Custom Voting Box
+$(document).ready(function () {
+    $('a.vote-up').text('Vote');
+    $(".vote-sum").after("<span class='cVoteText'>Votes</span>");
+
+    if ($('.vote-up').hasClass("vote-voted")) {
+        $('.vote-up').text('Voted!');
+        $(this).css('background', '#2a81d7;');
+    }
+
+    $(".vote-up").click(function () {
+        if (document.getElementById("user")) {
+            if ($(this).hasClass("vote-voted")) {
+                $(this).text('Vote');
+            } else {
+                $(this).text('Voted!');
+                $(this).css('background', '#2a81d7;');
+            }
+        } else {
+            var logHref = $('.login').attr('href');
+            $('.vote-button').attr('href', logHref);
+        }
+
+    });
+});
+
+$(document).ready(function () {
+    
+    var assetsMouseLeave = $(".menu-mobile .menuLay img").attr('data-mouseClo');
+    var assetsMenuClose = $(".menu-mobile .menuLay img").attr('data-mouseDef');
+    "use strict";
+    $('.menu > ul > li:has( > ul)').addClass('menu-dropdown-icon');
+    $('.menu > ul > li > ul:not(:has(ul))').addClass('normal-sub');
+    //$(".menu .mLogo").before("<a href=\"#\" class=\"menu-mobile\">&nbsp;</a>");
+    $(".menu > ul").first().before("<span class=\"searchSpan\"><span class=\"searchLay\"><span class=\"search-mobile\">&nbsp;</span></span></span>");
+    $(".menu > ul > li").hover(function (e) {
+    });
+    $(".menu > ul > li").click(function () {
+        if ($(window).width() <= 943) {
+            $(this).children("ul").fadeToggle(150);
+        }
+    });
+    $(".menu-mobile").click(function (e) {
+        $('.searchSpan .searchLay').removeClass('closeSer');
+        $(".menu-mobile").toggleClass('bg-on-mobile');
+        if (!$(".menu-mobile").hasClass('bg-on-mobile')) {
+            $(".menu-mobile .menuLay img").attr("src", assetsMenuClose);
+        } else {
+            $(".menu-mobile .menuLay img").attr("src", assetsMouseLeave);
+        }
+        $(".menu > ul").toggleClass('show-on-mobile');
+        $('.searchSpan .searchLay').css('background', 'transparent');
+        $('.tabSer').css('display', 'none');
+        e.preventDefault();
+    });
+});
+
+$(window).resize(function () {
+    $(".menu > ul > li").children("ul").hide();
+    $(".menu > ul").removeClass('show-on-mobile');
+});
+
+//Post form custom validations
+$(document).ready(function () {
+    
+    $('body').on('click', 'form.new_community_post input[type="submit"]', function (event) {
+        if ($("#hc-wysiwyg").length > 0) {
+            if ($.trim($('#community_post_title').val()) === "" || $.trim($('#community_post_details_ifr').contents().find('body').text()) === "" || $.trim($("#community_post_topic_id").val()) === "" || $('#community_post_title').val().length > 75 || $.trim($('#community_post_details_ifr').contents().find('body').text()).length > 1500) {
+                event.preventDefault();
+                if ($.trim($('#community_post_title').val()) === "" || $('#community_post_title').val().length > 75) {
+                    if ($.trim($('#community_post_title').val()) === "") {
+                        $('#editorVali1').text("can't be blank");
+                    } else if ($('#community_post_title').val().length > 75) {
+                        $('#editorVali1').text("maximum 75 characters only");
+                    }
+                    $('#editorVali1').css('display', 'block');
+                } else {
+                    $('#editorVali1').css('display', 'none');
+                }
+                if ($.trim($('#community_post_details_ifr').contents().find('body').text()) === "" || $.trim($('#community_post_details_ifr').contents().find('body').text()).length > 1500) {
+                    if ($.trim($('#community_post_details_ifr').contents().find('body').text()) === "") {
+                        $('#editorVali').text("can't be blank");
+                    } else if ($.trim($('#community_post_details_ifr').contents().find('body').text()).length > 1500) {
+                        $('#editorVali').text("maximum 1500 characters only");
+                    }
+                    $('#editorVali').css('display', 'block');
+                } else {
+                    $('#editorVali').css('display', 'none');
+                }
+                if ($.trim($('#community_post_topic_id').val()) === "") {
+                    $('#editorVali3').css('display', 'block');
+                } else {
+                    $('#editorVali3').css('display', 'none');
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if ($.trim($('#community_post_title').val()) === "" || $.trim($('#community_post_details').val()) === "" || $.trim($("#community_post_topic_id").val()) === "" || $('#community_post_title').val().length > 75 || $('#community_post_details').val().length > 1500) {
+                event.preventDefault();
+                if ($.trim($('#community_post_title').val()) === "" || $('#community_post_title').val().length > 75) {
+                    if ($.trim($('#community_post_title').val()) === "") {
+                        $('#editorVali1').text("can't be blank");
+                    } else if ($('#community_post_title').val().length > 75) {
+                        $('#editorVali1').text("maximum 75 charecters only");
+                    }
+                    $('#editorVali1').css('display', 'block');
+                } else {
+                    $('#editorVali1').css('display', 'none');
+                }
+                if ($.trim($('#community_post_details').val()) === "" || $('#community_post_details').val().length > 1500) {
+                    if ($.trim($('#community_post_details').val()) === "") {
+                        $('#editorVali').text("can't be blank");
+                    } else if ($('#community_post_details').val().length > 1500) {
+                        $('#editorVali').text("maximum 1500 charecters only");
+                    }
+                    $('#editorVali').css('display', 'block');
+                } else {
+                    $('#editorVali').css('display', 'none');
+                }
+                if ($.trim($('#community_post_topic_id').val()) === "") {
+                    $('#editorVali3').css('display', 'block');
+                } else {
+                    $('#editorVali3').css('display', 'none');
+                }
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
+    });
+});
+
+//Comment form custom validation
+$(document).ready(function () {
+    $('body').on('click', 'form.comment-form input[type="submit"]', function (event) {
+        if ($("#hc-wysiwyg").length > 0) {
+            if ($.trim($('#community_comment_body_ifr').contents().find('body').text()).length > 1500) {
+                event.preventDefault();
+                if ($.trim($('#community_comment_body_ifr').contents().find('body').text()).length > 1500) {
+                    $('#editorValiCom').css('display', 'block');
+                } else {
+                    $('#editorValiCom').css('display', 'none');
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if ($.trim($('#community_comment_body').val()).length > 1500) {
+                event.preventDefault();
+                if ($.trim($('#community_comment_body').val()).length > 1500) {
+                    $('#editorValiCom').css('display', 'block');
+                } else {
+                    $('#editorValiCom').css('display', 'none');
+                }
+                return false;
+            } else {
+                return true;
+            }
+        }
+    });
+});
+
+/* Ticket Creation */
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    $("#apiCall").click(function () {
+        var arr1 = [{
+                "subject": "Help!",
+                "comment": {
+                    "body": "My printer is on fire!"
+                }
+            }]
+        arr1.forEach(function (elem, index) {
+            var arr = {
+                "request": elem
+            };
+            var aT = "xblsender11@outlook.com/token:Nbi5sgIZLm7O9RihP4sUOoLvfUq4g49vmywN6WHt";
+            $.ajax({
+                url: 'https://' + hostname + '/api/v2/requests.json',
+                /*headers: {
+                 Authorization: "Basic (xblsender11@outlook.com/token:Nbi5sgIZLm7O9RihP4sUOoLvfUq4g49vmywN6WHt)"
+                 },*/
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json',
+                Accept: 'application/json',
+                dataType: 'json',
+                async: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic (xblsender11@outlook.com/token:Nbi5sgIZLm7O9RihP4sUOoLvfUq4g49vmywN6WHt)");
+                },
+                success: function (msg) {
+                    console.log(msg);
+                },
+                error: function (xhr, errorText) {
+                    console.log('Error ' + xhr.responseText);
+                }
+            });
+        });
+    });
+});
+
+/* Request Creation */
+$(document).ready(function () {
+    var hostname = window.location.hostname;
+    $(".reportComment span, .reportPost").click(function () {
+        var arr1 = [{
+                "requester": {"name": "Anonymous customer"},
+                "subject": "Help!",
+                "comment": {
+                    "body": "My printer is on fire!"
+                }
+            }];
+        arr1.forEach(function (elem, index) {
+            var arr = {
+                "request": elem
+            };
+            $.ajax({
+                url: 'https://' + hostname + '/api/v2/requests.json',
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json',
+                Accept: 'application/json',
+                dataType: 'json',
+                async: false,
+                success: function (msg) {
+                    $('.hover_bkgr_fricc').show();
+                    console.log(msg);
+                },
+                error: function (xhr, errorText) {
+                    console.log('Error ' + xhr.responseText);
+                }
+            });
+        });
+    });
+});
+
+$(window).load(function () {
+    $(".trigger_popup_fricc").click(function () {
+        $('.hover_bkgr_fricc').show();
+    });
+    $('.hover_bkgr_fricc').click(function () {
+        $('.hover_bkgr_fricc').hide();
+    });
+    $('.popupCloseButton').click(function () {
+        $('.hover_bkgr_fricc').hide();
+    });
+});
+
+jQuery(window).on("load resize", function () {
+    
+    var assetsMenuClose = $(".menu-mobile .menuLay img").attr('data-mouseDef');
+    setTimeout(function () {
+        jQuery(function () {
+            var assetsMenuClose = $(".menu-mobile .menuLay img").attr('data-mouseDef');
+            var userAgent = (navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/));
+            if (navigator.userAgent.match(/Android/i)) {
+                $(".menu-mobile .menuLay img").attr("src", assetsMenuClose);
+                $(".menu-mobile").removeClass('bg-on-mobile');
+                $(".menu > ul").removeClass('show-on-mobile');
+            } else if (navigator.userAgent.match(/iPod|iPhone|iPad/i)) {
+                $(".menu-mobile .menuLay img").attr("src", assetsMenuClose);
+                $(".menu-mobile").removeClass('bg-on-mobile');
+                $(".menu > ul").removeClass('show-on-mobile');
+            }
+        });
+    }, 300);
+});
+
+//hide system fields based on ticket forms(change subdomain and form id)
+$(document).ready(function () {
+    
+    var lang = $('html').attr('lang').toLowerCase();
+    var whatWeCan = $('#dynamicContent').attr('data-whatWeCan');
+    var pleaseDoNot = $('#dynamicContent').attr('data-pleaseDoNot');
+    var pleaseProvideProof = $('#dynamicContent').attr('data-pleaseProvideProof');
+    var pleaseProvideExtra = $('#dynamicContent').attr('data-pleaseProvideExtra');
+    var locationAddress = $('#dynamicContent').attr('data-locationAddress');
+    var screenshots = $('#dynamicContent').attr('data-screenshots');
+    var pleaseInclude = $('#dynamicContent').attr('data-pleaseInclude');
+
+    $('.addLink').remove();
+    $('#request_subject').val('Test ticket');
+    $('.form-field.string.optional.request_subject').hide();
+    $('.form-field.string.required.request_subject').hide();
+    $('.form-field.request_description').hide();
+    $('#request_subject').val('Your Minecraft Question');
+
+    $('.form-field label[for=request-attachments]').parent('.form-field').hide();
+    $('#upload-dropzone').hide();
+
+    //transaction id
+    $(".request_custom_fields_360021175192 input").on("change paste keyup", function () {
+        if ($(".request_custom_fields_360021175192 input").attr('value') == '__dc.minecraft_java_edition__' && $(".request_custom_fields_360021224051 input").attr('value') !== undefined) {
+            $('.request_custom_fields_360023255391').show();
+        } else {
+            $('.request_custom_fields_360023255391').hide();
+        }
+    });
+    //end
+
+    $(".request_custom_fields_360021224051 input").on("change paste keyup", function () {
+        if ($('.request_custom_fields_addLink').length != 0) {
+            $('.request_custom_fields_addLink').remove();
+        }
+        //Transaction ID
+        if ($(".request_custom_fields_360021175192 input").attr('value') == '__dc.minecraft_java_edition__') {
+            $('.request_custom_fields_360023255391').show();
+        } else {
+            $('.request_custom_fields_360023255391').hide();
+        }
+        // End
+        $('.errorStyle').remove();
+        if ($('.descText').length) {
+            $('.descText').remove();
+        }
+        $('#request_description_label').text(whatWeCan);
+        $('.request_description .hintText').text(pleaseDoNot);
+        $('.request_description .hintText').hide();
+        $('.form-field label[for=request-attachments]').siblings('.hintText').remove();
+        $('.formMidHead').remove();
+        var thisVal = $('.request_custom_fields_360021224051 .nesty-input').text();
+        setTimeout(function () {
+            if ($('.request_description').css('display') == 'block') {
+                $('.request_description').after('<p class="descText">' + pleaseDoNot + '</p>');
+            } else {
+                $('.descText').remove();
+            }
+        }, 300);
+        if ($(".request_custom_fields_360021224051 input").val() !== '') {
+            $('.request_custom_fields_360021224051').after('<p class="formMidHead">' + thisVal + '</p>');
+        }
+        if ($(this).val() == "dmca_request") {
+            var Sharebuildplate = $('#dynamicContent').attr('data-sharedbuildplate');
+            var addbutton = $('#dynamicContent').attr('data-add');
+            $('.formMidHead').after('<div class="form-field string request_custom_fields_addLink required addLink"><label id="request_custom_fields_addLink_label">' + Sharebuildplate + '</label><p class="hintText">Add up to 25 links</p><input type="text" id="request_custom_fields_addLink" aria-required="false"><button type="button" class="button">' + addbutton + '</button><div id="linkList"></div></div>');
+            $('#request_custom_fields_360021176652_label').text(locationAddress);
+            $('.form-field.string.optional.request_subject').hide();
+            $('.form-field.string.required.request_subject').hide();
+            $('.form-field.request_description').hide();
+            $('#request_subject').val('Your Minecraft Question');
+            $('#request_description').val('NA');
+            $('.form-field label[for=request-attachments]').parent('.form-field').hide();
+            $('#upload-dropzone').hide();
+        } else if ($(this).val() == "-_unsafe_location_report") {
+            $('#request_custom_fields_360021176652_label').text(locationAddress);
+            $('#request_description_label').text('Additional information');
+            $('.request_description .hintText').show();
+            $('.form-field label[for=request-attachments]').parent('.form-field').show();
+            $('#upload-dropzone').show();
+            $('.request_description').show();
+            $(".form-field label[for='request-attachments']").text(screenshots);
+            $(".form-field label[for='request-attachments']").after('<p class="hintText">' + pleaseInclude + '</p>');
+        } else if ($(this).val() == "-_private_property_exclusion") {
+            $('.form-field label[for=request-attachments]').parent('.form-field').addClass('required');
+            $('#request_description_label').text('Additional information');
+            $('.request_description .hintText').show();
+            $('.form-field label[for=request-attachments]').parent('.form-field').show();
+            $('#upload-dropzone').show();
+            $('.request_description').show();
+            $(".form-field label[for='request-attachments']").text(pleaseProvideProof);
+            $(".form-field label[for='request-attachments']").after('<p class="hintText">' + pleaseProvideExtra + '</p>');
+        } else if ($(this).val() == "-_public_parks_exclusion") {
+            $('.form-field label[for=request-attachments]').parent('.form-field').addClass('required');
+            $('#request_description_label').text('Additional information');
+            $('.request_description .hintText').show();
+            $('.form-field label[for=request-attachments]').parent('.form-field').show();
+            $('#upload-dropzone').show();
+            $('.request_description').show();
+            $(".form-field label[for='request-attachments']").text(pleaseProvideProof);
+            $(".form-field label[for='request-attachments']").after('<p class="hintText">' + pleaseProvideExtra + '</p>');
+        } else {
+            $('#request_custom_fields_360021176652_label').text('Street address');
+            $('.form-field.request_description').show();
+            $('#request_description').val('');
+            $('.form-field label[for=request-attachments]').parent('.form-field').show();
+            $('#upload-dropzone').show();
+            $(".form-field label[for='request-attachments']").text('Attachments');
+            $('.form-field label[for=request-attachments]').parent('.form-field').find('.errorStyle').remove();
+            $('.form-field label[for=request-attachments]').parent('.form-field').removeClass('required');
+            $('.addLink').remove();
+        }
+    });
+});
+
+//Post form custom validations
+$(document).ready(function () {
+    
+    var hostname = window.location.hostname;
+    var urlPath = document.location.pathname;
+    var pageUrl = document.URL;
+    var enUs = 'https://' + hostname + '/hc/en-us/requests/new?ticket_form_id=360000491032';
+    var de = 'https://' + hostname + '/hc/de/requests/new?ticket_form_id=360000491032';
+    var enGb = 'https://' + hostname + '/hc/en-gb/requests/new?ticket_form_id=360000491032';
+    var ja = 'https://' + hostname + '/hc/ja/requests/new?ticket_form_id=360000491032';
+    var es = 'https://' + hostname + '/hc/es/requests/new?ticket_form_id=360000491032';
+    var fr = 'https://' + hostname + '/hc/fr-fr/requests/new?ticket_form_id=360000491032';
+    var checkboxTitle = $('#dynamicContent').attr('data-checkboxTitle');
+    var cannotBlank = $('#dynamicContent').attr('data-cannotBlank');
+    var captchaError = $('#dynamicContent').attr('data-captchaError');
+    var validEmail = $('#dynamicContent').attr('data-validEmail');
+    var emailMismatch = $('#dynamicContent').attr('data-emailMismatch');
+    function validateEmail($email) {
+        var emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return emailRegex.test($email);
+    }
+    $(".request_custom_fields_360021224611").before('<p class="checkTitle">' + checkboxTitle + '</p>');
+    //$('.form-field.request_ticket_form_id').remove();
+    $('.form-field.boolean').append('<span class="checkmark"></span>');
+    var lang = $('html').attr('lang').toLowerCase();
+    if (pageUrl == enUs || pageUrl == de || pageUrl == enGb || pageUrl == ja || pageUrl == es || pageUrl == fr) {
+        $('.customCountry').hide();
+    }
+
+    if (lang == 'en-us') {
+        $(".request_custom_fields_360021175712 input").val('english_us');
+    }
+    if (lang == 'de') {
+        $(".request_custom_fields_360021175712 input").val('germany');
+    }
+    if (lang == 'en-gb') {
+        $(".request_custom_fields_360021175712 input").val('english_gb');
+    }
+    if (lang == 'es') {
+        $(".request_custom_fields_360021175712 input").val('spanish');
+    }
+    if (lang == 'fr-fr') {
+        $(".request_custom_fields_360021175712 input").val('french');
+    }
+    if (lang == 'ja') {
+        $(".request_custom_fields_360021175712 input").val('japanese');
+    }
+    $("#request_custom_fields_360021223711").on("change paste keyup", function () {
+        updateName();
+    });
+    function updateName() {
+        $("#request_custom_fields_360021176832").val($('#request_custom_fields_360021223711').val());
+    }
+    $("#request_custom_fields_360021175632").on("change paste keyup", function () {
+        updateEmail();
+    });
+    function updateEmail() {
+        //$("#request_custom_fields_360021224591").val($('#request_custom_fields_360021175632').val());
+        $("#request_anonymous_requester_email").val($('#request_custom_fields_360021175632').val());
+    }
+    $(".request_custom_fields_360021175712 input").on("change paste keyup", function () {
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'english_us') {
+            window.location.href = enUs;
+        }
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'germany') {
+            window.location.href = de;
+        }
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'english_gb') {
+            window.location.href = enGb;
+        }
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'japanese') {
+            window.location.href = ja;
+        }
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'spanish') {
+            window.location.href = es;
+        }
+        if ($(".request_custom_fields_360021175712 input").attr('value') == 'french') {
+            window.location.href = fr;
+        }
+    });
+    $(".customCountry input").on("change paste keyup", function () {
+        if ($(".customCountry input").attr('value') == 'english_us') {
+            window.location.href = enUs;
+        }
+        if ($(".customCountry input").attr('value') == 'germany') {
+            window.location.href = de;
+        }
+        if ($(".customCountry input").attr('value') == 'english_gb') {
+            window.location.href = enGb;
+        }
+        if ($(".customCountry input").attr('value') == 'japanese') {
+            window.location.href = ja;
+        }
+        if ($(".customCountry input").attr('value') == 'spanish') {
+            window.location.href = es;
+        }
+        if ($(".customCountry input").attr('value') == 'french') {
+            window.location.href = fr;
+        }
+    });
+    $(".request_custom_fields_360021224051 .nesty-input").on("click paste keyup", function () {
+        $('form#new_request .form-field').each(function () {
+            $(this).removeClass('custOptional');
+            if ($(this).find('input[aria-required="false"]').length) {
+                $(this).addClass('custOptional');
+            }
+        });
+        $('#minecraft_earth_location_issues, #-_private_property_exclusion, #-_public_parks_exclusion, #-_unsafe_location_report').css('display', 'none');
+        if ($(".request_custom_fields_360021175192 input").attr('value') == 'gf_minecraft__dungeons') {
+            $('#realms_issues').css('display', 'none');
+        }
+        if ($(".request_custom_fields_360021175192 input").attr('value') == 'gf_minecraft_earth') {
+            $('#realms_issues').css('display', 'none');
+            $('#minecraft_earth_location_issues, #-_private_property_exclusion, #-_public_parks_exclusion, #-_unsafe_location_report').css('display', 'block');
+        }
+        // Transaction id
+        if ($(".request_custom_fields_360021175192 input").attr('value') == '__dc.minecraft_java_edition__') {
+            $('#dmca_request').css('display', 'none');
+        }
+        //end
+        if ($(".request_custom_fields_360021175192 input").attr('value') !== 'gf_minecraft_earth' && $(".request_custom_fields_360021175192 input").attr('value') !== 'gf_minecraft__dungeons') {
+            $('#minecraft_earth_location_issues, #-_private_property_exclusion, #-_public_parks_exclusion, #-_unsafe_location_report').css('display', 'none');
+        }
+
+    });
+    $('form#new_request .form-field').each(function () {
+        if ($(this).find('input[aria-required="false"]').length) {
+            $(this).addClass('custOptional');
+        }
+        if ($(this).find('p[id*="hint"]').length) {
+            var hintText = $(this).find('p[id*="hint"]').text();
+            $(this).find('p[id*="hint"]').hide();
+            $(this).find('label').after('<p class="hintText">' + hintText + '</p>');
+        }
+
+    });
+    $('body').on('click', 'form#new_request input[type="submit"]', function (event) {
+        var totalList = '';
+        $('#linkList .listLink').each(function () {
+            totalList += ($(this).text() + ' ')
+        });
+        $('#request_custom_fields_360021177492').val(totalList);
+        $('.errorStyle').remove();
+        $('.checkmark').css('border', '0');
+        var valList = new Array();
+        var ram = '';
+        $("#linkList p").each(function () {
+            //console.log($(this).children('.listLink').text());
+            let ra = $(this).children('.listLink').text()
+            ram += ra + ', ';
+        });
+        $('#request_custom_fields_360021177492').val(ram);
+        $('form#new_request .form-field.required').each(function () {
+            if ($(this).find('input[aria-required="true"]').val() == '') {
+                $(this).append('<p class="errorStyle">' + cannotBlank + '</p>');
+                var x = $(this).find('input[aria-required="true"]').attr('name');
+                console.log(x);
+                valList.push(valList.x);
+            }
+            if ($(this).find('textarea[aria-required="true"]').val() == '') {
+                $(this).append('<p class="errorStyle">' + cannotBlank + '</p>');
+                var x = $(this).find('input[aria-required="true"]').attr('name');
+                console.log(x);
+                valList.push(valList.x);
+            }
+            if ($(this).find('input[type="checkbox"]').prop('checked') == false) {
+                $(this).find('.checkmark').css('border', '1px solid #f00');
+                var x = $(this).find('input[aria-required="true"]').attr('name');
+                console.log(x);
+                valList.push(valList.x);
+            }
+        });
+        if (document.getElementById("noValid")) {
+            if (grecaptcha && grecaptcha.getResponse().length > 0) {
+                console.log('Well, recaptcha is checked !');
+            } else {
+                $('.g-recaptcha ').siblings('.errorStyle').remove();
+                $('.g-recaptcha ').parent('.form-field').append('<p class="errorStyle">' + captchaError + '</p>');
+                var y = 1;
+                valList.push(valList.y);
+            }
+        }
+        if ($(".request_custom_fields_360021224051 input").val() == "-_private_property_exclusion" || $(".request_custom_fields_360021224051 input").val() == "-_public_parks_exclusion") {
+            if ($('#request-attachments-pool').children().length == 0) {
+                $('.form-field label[for=request-attachments]').parent('.form-field').append('<p class="errorStyle">' + cannotBlank + '</p>');
+                var k = 1;
+                valList.push(valList.k);
+            }
+        }
+        if ($('.request_custom_fields_360021175632.required').length) {
+            var emailaddress = document.getElementById("request_custom_fields_360021175632").value;
+        }
+        if (!validateEmail(emailaddress)) {
+            var z = 1;
+            $('.request_custom_fields_360021175632 .errorStyle').remove();
+            $(".request_custom_fields_360021175632").append('<p class="errorStyle">' + validEmail + '</p>');
+            valList.push(valList.z);
+        } else {
+            $('#request_anonymous_requester_email').val(emailaddress);
+        }
+        if ($('.request_custom_fields_360021223731.required').length) {
+            var confemail = document.getElementById("request_custom_fields_360021223731").value;
+        }
+        if (emailaddress != confemail) {
+            var a = 1;
+            $('.request_custom_fields_360021223731 .errorStyle').remove();
+            $(".request_custom_fields_360021223731").append('<p class="errorStyle">' + emailMismatch + '</p>');
+            valList.push(valList.a);
+        }
+        if ($('.request_custom_fields_360021225191').length) {
+            var lat = document.getElementById("request_custom_fields_360021225191").value;
+        }
+        if ($('.request_custom_fields_360021177472').length) {
+            var long = document.getElementById("request_custom_fields_360021177472").value;
+        }
+        //attachments validation
+        if ($('#request-attachments-pool').children().length > 5) {
+            var k = 1;
+            $('#request-attachments-pool + .errorStyle').remove();
+            $('#request-attachments-pool').after('<p class="errorStyle">max 5 attachements allowed</p>');
+            valList.push(valList.k);
+        }
+        if (lat < -90 || lat > 90) {
+            var f = 1;
+            var latitude_err_msg = $('#dynamicContent').attr('data-latitude_err');
+            $('.request_custom_fields_360021225191 .errorStyle').remove();
+            $(".request_custom_fields_360021225191 .whiteText").remove();
+            $(".request_custom_fields_360021225191").append('<p class="errorStyle">' + latitude_err_msg + '</p>');
+            valList.push(valList.f);
+        } else {
+            $('.request_custom_fields_360021225191 .errorStyle').remove();
+            $(".request_custom_fields_360021225191 .whiteText").remove();
+            $(".request_custom_fields_360021225191").append('<p class="whiteText">.</p>');
+        }
+        if (long < -180 || long > 180) {
+            var h = 1;
+            var longitude_err_msg = $('#dynamicContent').attr('data-longitude_err');
+            $('.request_custom_fields_360021177472 .errorStyle').remove();
+            $(".request_custom_fields_360021177472 .whiteText").remove();
+            $(".request_custom_fields_360021177472").append('<p class="errorStyle">' + longitude_err_msg + '</p>');
+            valList.push(valList.h);
+        } else {
+            $('.request_custom_fields_360021177472 .errorStyle').remove();
+            $(".request_custom_fields_360021177472 .whiteText").remove();
+            $(".request_custom_fields_360021177472").append('<p class="whiteText">.</p>');
+        }
+        if (valList.length > 0) {
+            event.preventDefault();
+        }
+    });
+    /*$(document).ready(function() { 
+     var url = window.location.href;
+     /*if (url.indexOf("report_location") > -1) {     		   	
+     parts = url.split("?"),
+     last_part = parts[parts.length-1];      	
+     query_string_parts = last_part.split('&'),
+     lat  = query_string_parts[0];
+     long = query_string_parts[1];
+     lang = query_string_parts[2];        
+     hostname = window.location.hostname;
+     
+     window.location.href='https://' + hostname + '/hc/en-us/requests/new/?ticket_form_id=360000491032&' + lat +'&'+ long +'&' + lang; 
+     }* /  	
+     if(url.indexOf('lat') > -1){
+     parts = url.split("?"),
+     url_last_part = parts[parts.length-1];      	
+     url_query_string_parts = url_last_part.split('&'),
+     latitude  = url_query_string_parts[1].split('=')[1];
+     longitude = url_query_string_parts[2].split('=')[1];
+     language = url_query_string_parts[3].split('=')[1];
+     
+     if(language.toLowerCase() == 'en-us'){
+     $('#request_custom_fields_360021175712').val('english_us');
+     }
+     if(language.toLowerCase() == 'de-de'){
+     $('#request_custom_fields_360021175712').val('germany');
+     }
+     if(language.toLowerCase() == 'en-gb'){
+     $('#request_custom_fields_360021175712').val('english_gb');
+     }
+     if(language.toLowerCase() == 'ja-jp'){
+     $('#request_custom_fields_360021175712').val('japanese');
+     }
+     if(language.toLowerCase() == 'es-mx'){
+     $('#request_custom_fields_360021175712').val('spanish');
+     }
+     if(language.toLowerCase() == 'fr-fr'){
+     $('#request_custom_fields_360021175712').val('french');
+     }
+     var localStorageObj = {'params':[ {'latitude' : latitude}, { 'longitude' : longitude},]}
+     localStorage.setItem('minecraftHelpForm',JSON.stringify(localStorageObj));
+     }      
+     });*/
+});
+
+//$(window).load(function() {
+$(document).ready(function () {
+    
+    var url = window.location.href;
+    var hostname = window.location.hostname;
+    var lang = $('html').attr('lang').toLowerCase();
+    if (url == 'https://' + hostname + '/hc/' + lang + '/requests/new/' ||
+            url == 'https://' + hostname + '/hc/' + lang + '/requests/new') {
+        $('.customCountry').show();
+    } else {
+        $('.customCountry').hide();
+    }
+    var localStorageObj = JSON.parse(localStorage.getItem('minecraftHelpForm'));
+    if (localStorageObj) {
+        $('#request_custom_fields_360021175192').val('gf_minecraft_earth');
+        $('#request_custom_fields_360021224051').val('-_unsafe_location_report');
+        if (localStorageObj.params[0].latitude != '') {
+          	var lat = localStorageObj.params[0].latitude.replace("lat=", "");
+            $('#request_custom_fields_360021225191').val(lat);
+        }
+        if (localStorageObj.params[1].longitude != '') {
+          	var long = localStorageObj.params[1].longitude.replace("long=", "");
+            $('#request_custom_fields_360021177472').val(long);
+        }
+    }
+    localStorage.removeItem('minecraftHelpForm');
+});
+
+
+/*Genoa form Country flag for PhoneNumber field functionality - 95314 */
+$(document).ready(function () {
+    
+    $("#request_custom_fields_360021225171").attr('type', 'tel');
+    $("#request_custom_fields_360021225171").on('keypress', function (evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode != 45 && charCode > 31
+                && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    });
+    $("#request_custom_fields_360021225171").wrap('<div id="countryPhoneNumber" data-selected-country="US"/>');
+    var countriesList = {
+        "DZ": "213",
+        "AO": "244",
+        "AR": "54",
+        "AM": "374",
+        "AU": "61",
+        "AT": "43",
+        "AZ": "994",
+        "BH": "973",
+        "BE": "32",
+        "BJ": "229",
+        "BO": "591",
+        "BW": "267",
+        "BR": "55",
+        "BG": "359",
+        "BF": "226",
+        "BI": "257",
+        "CM": "237",
+        "CA": "1",
+        "CV": "238",
+        "CF": "236",
+        "TD": "235",
+        "CL": "56",
+        "CN": "86",
+        "CO": "57",
+        "CR": "506",
+        "HR": "385",
+        "CY": "357",
+        "CZ": "420",
+        "CD": "243",
+        "DK": "45",
+        "DO": "1-809",
+        "EC": "539",
+        "EG": "20",
+        "SV": "503",
+        "GQ": "240",
+        "ER": "291",
+        "EE": "372",
+        "ET": "251",
+        "FI": "358",
+        "FR": "33",
+        "GA": "241",
+        "GM": "220",
+        "GE": "995",
+        "DE": "49",
+        "GH": "233",
+        "GR": "30",
+        "GT": "502",
+        "GN": "224",
+        "GW": "245",
+        "HN": "504",
+        "HK": "852",
+        "HU": "36",
+        "IS": "354",
+        "IN": "91",
+        "ID": "62",
+        "IR": "98",
+        "IR": "964",
+        "IE": "353",
+        "IL": "972",
+        "IT": "39",
+        "JM": "1-876",
+        "JP": "81",
+        "JO": "962",
+        "KZ": "7",
+        "KE": "254",
+        "KR": "82",
+        "KW": "965",
+        "LV": "371",
+        "LB": "961",
+        "LS": "266",
+        "LR": "231",
+        "LY": "218",
+        "LI": "423",
+        "LT": "370",
+        "LU": "352",
+        "MO": "853",
+        "MK": "389",
+        "MG": "261",
+        "MW": "265",
+        "MY": "60",
+        "ML": "223",
+        "MT": "356",
+        "MR": "222",
+        "MU": "230",
+        "MX": "52",
+        "MC": "377",
+        "MA": "212",
+        "MZ": "258",
+        "NA": "264",
+        "NL": "31",
+        "NZ": "64",
+        "NE": "227",
+        "NG": "234",
+        "NO": "47",
+        "OM": "968",
+        "PK": "92",
+        "PA": "507",
+        "PY": "595",
+        "PE": "51",
+        "PH": "63",
+        "PL": "48",
+        "PT": "351",
+        "QA": "974",
+        "CG": "242",
+        "RO": "40",
+        "RU": "7",
+        "RW": "250",
+        "ST": "239",
+        "SA": "966",
+        "SN": "221",
+        "RS": "381",
+        "SC": "248",
+        "SG": "65",
+        "SK": "421",
+        "SI": "386",
+        "ZA": "27",
+        "ES": "34",
+        "SD": "249",
+        "SZ": "268",
+        "SE": "46",
+        "CH": "41",
+        "SY": "963",
+        "TW": "886",
+        "TZ": "255",
+        "TH": "66",
+        "TG": "228",
+        "TT": "1-868",
+        "TN": "216",
+        "TR": "90",
+        "TM": "993",
+        "UG": "256",
+        "UA": "380",
+        "AE": "971",
+        "GB": "44",
+        "US": "1",
+        "UY": "598",
+        "VE": "58",
+        "VN": "84",
+        "YE": "967",
+        "ZM": "260",
+        "ZW": "263"
+    }
+    $('#countryPhoneNumber').flagsdd({
+        countries: countriesList,
+        scrollable: true,
+        scrollableHeight: "200px"
+    });
+    $(document).click(function (e) {
+        e.stopPropagation();
+        var container = $("#flags-drop-down");
+
+        //check if the clicked area is dropDown or not
+        if (container.has(e.target).length === 0) {
+            $('#flags-drop-down-list').removeClass('open')
+        }
+    })
+});
+
+$.fn.flagsdd = function (options) {
+    
+    return this.each(function (i) {
+        if ($(this).data('flags') === undefined) {
+            $(this).data('flags', new $.generateFlagsDD(this, options, i));
+        }
+    });
+}
+
+var defaults = {
+    labelMargin: "10px",
+    scrollable: true,
+    scrollableHeight: "250px",
+    placeholder: {
+        value: '',
+    }
+};
+
+var countries;
+var default_size = {w: 20, h: 15};
+function calcPos(letter, size) {
+    
+    return -(letter.toLowerCase().charCodeAt(0) - 97) * size;
+}
+
+$.fn.setFlagPosition = function (iso, size) {
+    size || (size = default_size);
+    var x = calcPos(iso[1], size.w),
+            y = calcPos(iso[0], size.h);
+    return $(this).css('background-position', [x, 'px ', y, 'px'].join(''));
+};
+
+$.generateFlagsDD = function (element, options, i) {
+    
+    var plugin = this;
+    plugin.countries = {};
+    plugin.selected = {value: null, text: null};
+    var $container = $(element);
+    var htmlSelectId = 'flag-select';
+    var htmlSelect = '#' + htmlSelectId;
+
+    plugin.init = function () {
+        // Merge in global settings then merge in individual settings via data attributes
+        plugin.countries = countries;
+
+        // Initialize Settings, priority: defaults, init options, data attributes
+        plugin.countries = countries;
+        plugin.settings = $.extend({}, defaults, options, $container.data());
+
+        if (undefined !== plugin.settings.countries) {
+            plugin.countries = plugin.settings.countries;
+        }
+
+        if (undefined !== plugin.settings.inputId) {
+            htmlSelectId = plugin.settings.inputId;
+            htmlSelect = '#' + htmlSelectId;
+        }
+
+        // Build HTML Select, Construct the drop down button, Assemble the drop down list items element and insert
+        $container.append(buildHtmlSelect).append(buildDropDownButton).append(buildDropDownButtonItemList);
+
+        $('#flags-drop-down').on('click', function () {
+            $(".dropdown-menu").addClass('open')
+        })
+        // Hide the actual HTML select
+        $(htmlSelect).hide();
+
+    };
+
+    var buildHtmlSelect = function () {
+        var htmlSelectElement = $('<select/>').attr('id', htmlSelectId).attr('name', plugin.settings.inputName);
+        $.each(plugin.countries, function (code, country) {
+            var optionAttributes = {value: code};
+            if (plugin.settings.selectedCountry !== undefined) {
+                if (plugin.settings.selectedCountry === code) {
+                    optionAttributes = {value: code, selected: "selected"};
+                    plugin.selected = {value: code, text: country}
+                }
+            }
+            htmlSelectElement.append($('<option>', optionAttributes).text(country));
+        });
+
+        if (plugin.settings.placeholder !== false) {
+            htmlSelectElement.prepend($('<option>', {
+                value: plugin.settings.placeholder.value,
+                text: plugin.settings.placeholder.text
+            }));
+        }
+
+        return htmlSelectElement;
+    };
+
+    var buildDropDownButton = function () {
+        var selectedText = $(htmlSelect).find('option').first().text();
+        var selectedValue = $(htmlSelect).find('option').first().val();
+        selectedText = plugin.selected.text || selectedText;
+        selectedValue = plugin.selected.value || selectedValue;
+
+        if (selectedValue !== plugin.settings.placeholder.value) {
+            var $selectedLabel = $('<i/>').addClass('flag-icon').setFlagPosition(selectedValue);
+        } else {
+            var $selectedLabel = $('<i/>').addClass('flag-icon flagstrap-placeholder');
+        }
+
+        //var buttonLabel = $('<span/>').addClass('flag-selected' ).html($selectedLabel).append(selectedText);
+        var buttonLabel = $('<span/>').addClass('flag-selected').html($selectedLabel);
+        $('#request_custom_fields_360021225171').val('( ' + selectedText + ' ) ');
+        var button = $('<button/>').attr('type', 'button').attr('data-toggle', 'dropdown').attr('id', 'flags-drop-down').addClass('btn ' + plugin.settings.buttonType + ' ' + plugin.settings.buttonSize + ' dropdown-toggle').html(buttonLabel);
+        $('<span/>').addClass('caret').insertAfter(buttonLabel);
+        return button;
+    };
+
+    var buildDropDownButtonItemList = function () {
+        var items = $('<ul/>').attr('id', 'flags-drop-down-' + 'list').attr('aria-labelled-by', 'flags-drop-down-').addClass('dropdown-menu');
+
+        if (plugin.settings.scrollable) {
+            items.css('height', 'auto').css('max-height', plugin.settings.scrollableHeight).css('overflow-x', 'hidden');
+        }
+        // Populate the bootstrap dropdown item list
+        $(htmlSelect).find('option').each(function () {
+            // Get original select option values and labels
+            var text = $(this).text();
+            var value = $(this).val();
+            // Build the flag icon
+            if (value !== plugin.settings.placeholder.value) {
+                var flagIcon = $('<i/>').addClass('flag-icon').setFlagPosition(value);
+            } else {
+                var flagIcon = null;
+            }
+            // Build a clickable drop down option item, insert the flag and label, attach click event
+            // var flagStrapItem = $('<label/>').attr('data-val', $(this).val()).html(flagIcon).append(text)
+            if (flagIcon) {
+                var flagStrapItem = $('<label class=' + $(this).val() + '/>').attr('data-val', $(this).val()).html(flagIcon)
+                        .on('click', function (e) {
+                            $('.dropdown-menu').removeClass('open');
+                            $(this).find('i').setFlagPosition($(this).attr('data-val'));
+                            $(htmlSelect).val($(this).data('val'));
+                            $(htmlSelect).trigger('change');
+                            $('.flag-selected').html($(this).html());
+                            $("#request_custom_fields_360021225171 ").val('( ' + text + ' ) ');
+                        });
+                // Make it a list item
+                var listItem = $('<li/>').prepend(flagStrapItem);
+                // Append it to the drop down item list
+                items.append(listItem);
+            }
+        });
+        return items;
+    };
+    plugin.init();
+};
